@@ -1,0 +1,56 @@
+﻿<UserControl
+    x:Class="training.View.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicPlayer.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ViewModels="using:MusicPlayer.ViewModels"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <UserControl.DataContext>
+        <ViewModels:MusicPlayerViewModels/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <MediaPlayerElement x:Name="mediaSimple" Grid.Column="0"
+                            Source="ms-appx:///Assets/Video/demo.webm"
+                            AutoPlay="False"
+                            AreTransportControlsEnabled="True">
+            <MediaPlayerElement.TransportControls>
+                <MediaTransportControls
+                    IsFastForwardButtonVisible="True"
+                    IsFastForwardEnabled="True"
+                    IsFastRewindButtonVisible="True"
+                    IsFastRewindEnabled="True"
+                    IsPlaybackRateButtonVisible="True"
+                    IsPlaybackRateEnabled="True"
+                    IsCompact="False">
+                </MediaTransportControls>
+            </MediaPlayerElement.TransportControls>
+        </MediaPlayerElement>
+        <Grid Grid.Column="1" Background="AliceBlue">
+            <TextBlock Text="Play List" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="40" ></TextBlock>
+            <ListView x:Name="listView" Margin="0,60,0,20" SelectionMode="None" IsItemClickEnabled="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Grid Height="50">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="47"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="ms-appx:///Assets/icon/icon_music.jpg" Width="32" Height="32" 
+                       HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Path=Name, Mode=TwoWay}" Foreground="Teal" 
+                           FontSize="14" Grid.Column="1" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</UserControl>
