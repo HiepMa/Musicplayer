@@ -13,7 +13,7 @@
             <RowDefinition/>
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
-        <ListView x:Name="listView" Margin="0,10,0,10" SelectionMode="Single" IsItemClickEnabled="True" ItemsSource="{Binding Path=ListSong}" SelectedIndex="{Binding SelectTaskListIndex, Mode=TwoWay}" >
+        <ListView x:Name="listView" Margin="0,10,0,10" SelectionMode="Single" IsItemClickEnabled="True" ItemsSource="{Binding Path=ListSong}" SelectedIndex="{Binding SelectTaskListIndex, Mode=OneWay}" >
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="x:String">
                     <Grid Height="50" Width="300">

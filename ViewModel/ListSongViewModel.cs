@@ -19,6 +19,7 @@ namespace training.ViewModel
         private string _Song_Url;
         private int _id = 0;
         DatabaseService _db = DatabaseService.Instance();
+
         public ObservableCollection<Song> ListSong { get; set; }
         public ICommand Transfer
         {
@@ -49,6 +50,9 @@ namespace training.ViewModel
             loadListSong();
 /*            MusicPlayList();*/
             Change_Song();
+            Messenger.Default.Register<MessengerBus>(this, (message) => {
+                loadListSong(message.pl_ID);
+            });
             Add_Song = new RelayCommand(
                 param => this.Show_PickerAsync(param),
                 param => this.CanExecuteMyMethod(param));
@@ -107,19 +111,27 @@ namespace training.ViewModel
             }
         }
 
-        public void loadListSong()
+        public void loadListSong(int pl_id = default(int))
         {
-/*            Add_DB();*/
-            List<Song> List_song = DatabaseService.Instance().DB.SongDao.getAll();
+            /*            Add_DB();*/
+            List<Song> List_song;
+            if (pl_id != default(int)) {
+                Debug.WriteLine($"{pl_id}");
+                List_song = _db.GetSongFromPlaylist(pl_id);
+            } else
+                List_song = _db.GetAllSong();
+
             ObservableCollection<Song> Lsong = new ObservableCollection<Song>();
 /*            for (int i=0;i < List_song.Count() ;i++)
             {
                 Song newsong = new Song { Id = List_song[i].Id, Name = List_song[i].Name, Path = List_song[i].Path };
                 Lsong.Add(newsong);
             }*/
+                Debug.WriteLine("=====================");
             foreach (var s in List_song)
             {
                 Lsong.Add(s);
+                Debug.WriteLine($"{s.Name} - {s.Path}");
             }
             ListSong = Lsong;
         }

@@ -12,5 +12,6 @@ namespace training.Model
         
         public string NamePlayList { get; set; }
         public bool Trans { get; set; }
+        public int pl_ID { get; set; } 
     }
 }

@@ -38,6 +38,9 @@ namespace training.ViewModel
             get;
             private set;
         }
+
+        public ICommand Select_playlist { get; private set; }
+
         public PlayListViewModel()
         {
             LoadPlayList();
@@ -47,8 +50,22 @@ namespace training.ViewModel
             Add_PlayList = new RelayCommand(
                 param => this.Show_PickerAsync(param),
                 param => this.CanExecuteMyMethod(param));
-            
+            Select_playlist = new RelayCommand(
+                param => this.Show_ListSong(),
+                param => this.CanExecuteMyMethod(param));
         }
+
+        public void Show_ListSong() {
+            try {
+                Messenger.Default.Send<MessengerBus>(new MessengerBus() {
+                    Trans = false,
+                    pl_ID = this.PLayListSong[SelectTaskListIndex].Id
+                });
+            } catch (Exception e) {
+                MessageDialog dialog = new MessageDialog(e.Message);
+            }
+        }
+
         public void LoadPlayList()
         {
             List<Playlist> Play_List = DatabaseService.Instance().DB.PlaylistDao.getAll();
@@ -78,7 +95,6 @@ namespace training.ViewModel
                 {
                     _id = value;
                     RaisePropertyChanged("SelectTaskListIndex");
-                    /*                    Change_Song();*/
                 }
             }
         }
