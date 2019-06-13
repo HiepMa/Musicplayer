@@ -1,4 +1,4 @@
-﻿using training.DB.model;
+﻿using training.Model;
 
 namespace training.DB.engine
 {

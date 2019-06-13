@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ViewModels="using:training.ViewModel"
-    DataContext="{Binding Source={StaticResource ServiceViewModelLocator}, Path=PlayList}"
+    DataContext="{Binding Source={StaticResource ServiceViewModelLocator}, Path=MusicPlay}"
     mc:Ignorable="d">
     <Grid>
         <MediaElement x:Name="mediaSimple"

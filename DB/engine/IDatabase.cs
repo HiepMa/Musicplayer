@@ -1,7 +1,6 @@
 ﻿using training.DB.engine;
 
-namespace training.DB
-{
+namespace training.DB.engine {
     interface IDatabase
     {
         ISongDao SongDao { get; }

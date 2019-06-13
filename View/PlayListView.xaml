@@ -8,36 +8,36 @@
     xmlns:ViewModels="using:training.ViewModel"
     DataContext="{Binding Source={StaticResource ServiceViewModelLocator}, Path=PlayList}"
     mc:Ignorable="d">
-
-    <Grid>
-        <Grid Grid.Column="1" Background="LightGray">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Image Source="ms-appx:///Assets/icon/playlist.png" VerticalAlignment="Center" HorizontalAlignment="Center" Width="256"/>
-            </Grid>
-            <ListView x:Name="listView" Grid.Row="1" Margin="0,10,0,10" SelectionMode="Single" IsItemClickEnabled="True" ItemsSource="{Binding Path=ListSong}" SelectedIndex="{Binding SelectTaskListIndex, Mode=TwoWay}" >
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="x:String">
-                        <Grid Height="50" Width="300">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="47"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Image Source="ms-appx:///Assets/icon/icon_music.jpg" Width="32" Height="32" 
+    <Grid Background="LightGray">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <ListView x:Name="listView" Margin="0,10,0,10" SelectionMode="Single" IsItemClickEnabled="True" ItemsSource="{Binding Path=PLayListSong}" SelectedIndex="{Binding SelectTaskListIndex, Mode=TwoWay}" >
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="x:String">
+                    <Grid Height="50" Width="300">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="47"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="ms-appx:///Assets/icon/music.png" Width="32" Height="32" 
                                 HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding Path=Name}" Foreground="Teal" 
+                        <TextBlock Text="{Binding Path=Name}" Foreground="Teal" 
                                 FontSize="14" Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding Path=Duration}" Foreground="Black" FontSize="14" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <Button x:Name="add" Content="+" VerticalAlignment="Top" HorizontalAlignment="Center" Height="50" Background="LightGray" Margin="0,0,0,0" Command="{Binding Path=Add_Song}" Grid.Row="2" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Grid Grid.Row="1" Margin="0,4,0,-4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ToggleButton x:Name="add_playlist" FontFamily="Segoe MDL2 Assets" Grid.Column="0" Content="&#xECC8;" HorizontalAlignment="Center" Background="LightGray" Command="{Binding Path=Add_PlayList}"/>
+            <ToggleButton x:Name="delete_playlist" FontFamily="Segoe MDL2 Assets" Grid.Column="1" Content="&#xE74D;" HorizontalAlignment="Center" Background="LightGray" Command="{Binding Path=Delete_Playlist}" />
+            <ToggleButton x:Name="select_playlist" Grid.Column="2" FontFamily="Segoe MDL2 Assets" Content="&#xE761;" HorizontalAlignment="Center" Background="LightGray" Command="{Binding Path=Select_playlist}" />
         </Grid>
     </Grid>
 </UserControl>

@@ -9,20 +9,17 @@
     xmlns:views="using:training.View"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    DataContext="{Binding Source={StaticResource ServiceViewModelLocator}, Path=nag}">
+    DataContext="{Binding Source={StaticResource ServiceViewModelLocator}, Path=mainPage}">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
+        <StackPanel Grid.Column="1">
             <views:MusicPlayView x:Name="MusicPlayview" Height="720"/>
         </StackPanel>
-        <StackPanel Grid.Column="1" Visibility="{Binding Visility_1, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}">
-            <views:PlayListView x:Name="PlayListView" Height="720"/>
-        </StackPanel>
-        <StackPanel Grid.Column="1" Visibility="{Binding Visility_2, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}">
-            <views:ListSongView x:Name="ListSongView" Height="720"/>
+        <StackPanel Grid.Column="0" >
+            <views:ListView x:Name="ListView" Height="720"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -1,7 +1,4 @@
-﻿using training.DB.engine.inmem;
-
-namespace training.DB.engine
-{
+﻿namespace training.DB.engine.inmem {
     class InMemoryDatabase : IDatabase
     {
         public ISongDao SongDao = new SongDaoImpl();

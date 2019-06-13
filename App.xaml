@@ -2,9 +2,9 @@
     x:Class="training.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:viewModels="using:training.ViewModel"
+    xmlns:locator="using:training.ViewModel"
     xmlns:local="using:training">
     <Application.Resources>
-        <viewModels:ServiceViewModelLocator x:Key="ServiceViewModelLocator" />
+        <locator:ServiceViewModelLocator x:Key="ServiceViewModelLocator" />
     </Application.Resources>
 </Application>

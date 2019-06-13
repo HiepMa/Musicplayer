@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -7,10 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using training.DB.model;
-using training.Other;
+using training.DB;
+using training.Model;
+using training.Util;
 using Windows.Storage;
 using Windows.UI.Popups;
+using Windows.UI.Xaml.Controls;
 
 namespace training.ViewModel
 {
@@ -18,19 +21,49 @@ namespace training.ViewModel
     {
         // ms-appx:///Assets/Video/demo.webm
         public event PropertyChangedEventHandler PropertyChanged;
-        private string _Song_Url;
-        private int _id;
-        public string Song
+        private int _id = 0;
+        DatabaseService _db = DatabaseService.Instance();
+        public ObservableCollection<Playlist> PLayListSong { get; set; }
+
+        public string name { get; set; }
+
+        public ICommand Delete_Playlist
         {
-            get
+            get;
+            private set;
+        }
+
+        public ICommand Add_PlayList
+        {
+            get;
+            private set;
+        }
+        public PlayListViewModel()
+        {
+            LoadPlayList();
+            Delete_Playlist = new RelayCommand(
+                param => this.delete(),
+                param => this.CanExecuteMyMethod(param));
+            Add_PlayList = new RelayCommand(
+                param => this.Show_PickerAsync(param),
+                param => this.CanExecuteMyMethod(param));
+            
+        }
+        public void LoadPlayList()
+        {
+            List<Playlist> Play_List = DatabaseService.Instance().DB.PlaylistDao.getAll();
+            ObservableCollection <Playlist> play = new ObservableCollection<Playlist>();
+            foreach (var s in Play_List)
             {
-                return _Song_Url;
+                play.Add(s);
             }
-            set
-            {
-                _Song_Url = value;
-                RaisePropertyChanged("Song");
-            }
+            PLayListSong = play;
+        }
+
+        public void delete()
+        {
+            DatabaseService.Instance().DB.PlaylistDao.Delete(PLayListSong[SelectTaskListIndex].Id);
+            PLayListSong.Remove(PLayListSong[_id]);
         }
 
         public int SelectTaskListIndex
@@ -45,71 +78,21 @@ namespace training.ViewModel
                 {
                     _id = value;
                     RaisePropertyChanged("SelectTaskListIndex");
-                    Change_Song();
+                    /*                    Change_Song();*/
                 }
             }
         }
-
-        public ICommand Add_Song
-        {
-            get;
-            private set;
-        }
-
-        public ObservableCollection<Song> ListSong { get; set; }
-
-        public void MusicPlayList()
-        {
-            ObservableCollection<Song> song = new ObservableCollection<Song>();
-
-            song.Add(new Song { Id = 1, Name="New Song", Path="ms-appx:///Assets/Video/demo.mp4" });
-            song.Add(new Song { Id = 2, Name = "Yes I Do", Path = "ms-appx:///Assets/Video/demo.webm" });
-
-            ListSong = song;
-        }
-
-        public PlayListViewModel()
-        {
-            MusicPlayList();
-            Song = ListSong[0].Path;
-            Add_Song = new RelayCommand(
-                param => this.Show_PickerAsync(param),
-                param => this.CanExecuteMyMethod(param));
-        }
-
-        public void Change_Song()
-        {
-            Song = ListSong[_id].Path;
-        }
-
-        public async Task setPermissionFileAsync(Uri filepath)
-        {
-            Windows.Storage.StorageFolder installedLocation = Windows.ApplicationModel.Package.Current.InstalledLocation;
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(filepath);
-        }
-
         public async Task Show_PickerAsync(object obj)
         {
-            var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
-            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
-            picker.FileTypeFilter.Add(".mp3");
-            picker.FileTypeFilter.Add(".mp4");
-            picker.FileTypeFilter.Add(".webm");
-
-            Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
-            ObservableCollection<Song> song = new ObservableCollection<Song>();
-            if (file != null)
+            var addplsylist = new training.View.AddplayList();
+            addplsylist.ShowAsync();
+            Messenger.Default.Register<MessengerBus>(this, (message) =>
             {
-                // Application now has read/write access to the picked file
-                string[] namedetail = file.Name.Split('.');
-                ListSong.Add(new Song {Id = 10, Name = namedetail[0], Path = file.Path});
-                Windows.Storage.FileProperties.BasicProperties basicProperties = await file.GetBasicPropertiesAsync();
-                
-                string fileSize = string.Format("{0:n0}", basicProperties.Size);
-                Debug.WriteLine(fileSize);
-            }
-            /*            var file = await picker.PickMultipleFilesAsync();*/
+                this.name = message.NamePlayList;
+                Playlist p = new Playlist { Name = name };
+                DatabaseService.Instance().DB.PlaylistDao.Insert(p);
+                PLayListSong.Add(p);
+            });
         }
 
         private bool CanExecuteMyMethod(object parameter)

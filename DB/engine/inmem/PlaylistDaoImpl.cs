@@ -1,20 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using training.DB.model;
+using training.Model;
 
 namespace training.DB.engine.inmem
 {
     class PlaylistDaoImpl : GenericDaoImpl, IPlaylistDao
     {
-
-        public void addSong(Song s)
+        private int autoId = 0;
+        List<PlaylistSong> pls = new List<PlaylistSong>();
+        public void addSong(Song s, Playlist p)
         {
-            throw new NotImplementedException();
+            autoId++;
+            PlaylistSong pl = new PlaylistSong();
+            pl.Id = autoId;
+            pl.PlaylistId = p.Id;
+            pl.SongId = s.Id;
+            this.pls.Add(pl);
         }
 
         public List<Song> getSong(int playlistId)
         {
-            throw new NotImplementedException();
+            List<Song> list = new List<Song>();
+
+            this.pls.ForEach(delegate (PlaylistSong pls) {
+                if (pls.PlaylistId == playlistId) {
+                    var result = DatabaseService.Instance().DB.SongDao.getByID(pls.SongId);
+                    if (result != null)
+                        list.Add(result);
+                }
+            });
+
+            return list;
         }
 
         public int Insert(Playlist p)

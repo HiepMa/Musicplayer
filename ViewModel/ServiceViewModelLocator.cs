@@ -18,21 +18,25 @@ namespace training.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            SimpleIoc.Default.Register<StudentViewModel>();
-
-            SimpleIoc.Default.Register<NagationViewModel>();
-
             SimpleIoc.Default.Register<PlayListViewModel>();
 
             SimpleIoc.Default.Register<ListSongViewModel>();
-        }
 
-        public StudentViewModel Student => ServiceLocator.Current.GetInstance<StudentViewModel>();
+            SimpleIoc.Default.Register<MusicPlayViewModel>();
+
+            SimpleIoc.Default.Register<ListViewModel>();
+
+            SimpleIoc.Default.Register<AddPlsyListViewModel>();
+        }
 
         public PlayListViewModel PlayList => ServiceLocator.Current.GetInstance<PlayListViewModel>();
 
-        public NagationViewModel nag => ServiceLocator.Current.GetInstance<NagationViewModel>();
-
         public ListSongViewModel ListSong => ServiceLocator.Current.GetInstance<ListSongViewModel>();
+
+        public MusicPlayViewModel MusicPlay => ServiceLocator.Current.GetInstance<MusicPlayViewModel>();
+
+        public ListViewModel ListPage => ServiceLocator.Current.GetInstance<ListViewModel>();
+
+        public AddPlsyListViewModel AddPL => ServiceLocator.Current.GetInstance<AddPlsyListViewModel>();
     }
 }
